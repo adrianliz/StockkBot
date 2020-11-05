@@ -1,5 +1,6 @@
 # StockkBot
 REST API to automate buying/selling stocks
+
 `StockkBot` comes up as part of a Web Engineering project for UNIZAR
 
 # Contributors
