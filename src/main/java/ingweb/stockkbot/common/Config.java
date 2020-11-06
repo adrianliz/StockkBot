@@ -1,9 +1,10 @@
 package ingweb.stockkbot.common;
 
-import java.io.File;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+
+import java.io.File;
 
 public class Config {
   private static final String CONFIG_FILE = "config.properties";
@@ -12,6 +13,10 @@ public class Config {
   public static final String STOCKK_BOT_URI = "STOCKK_BOT_URI";
   public static final String SERVICES_DIRECTORY_BASE_URI = 
     "SERVICES_DIRECTORY_BASE_URI";
+  public static final String IDENTITY_SERVICE_NAME = "IDENTITY_SERVICE_NAME";
+  public static final String USERS_RULES_DIRECTORY_NAME = 
+    "USERS_RULES_DIRECTORY_NAME";
+  public static final String USERS_RULES_FILE_PATH = "USERS_RULES_FILE_PATH";
  
   private static Config instance = null;
   private Configuration config;

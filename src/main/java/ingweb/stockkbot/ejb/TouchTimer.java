@@ -4,11 +4,11 @@ import ingweb.stockkbot.common.Config;
 import ingweb.stockkbot.common.StatusCode;
 import ingweb.stockkbot.rest.client.ServicesDirectoryRESTclient;
 import ingweb.stockkbot.common.RESTstockkService;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.ws.rs.ClientErrorException;
-import org.apache.commons.configuration2.ex.ConfigurationException;
 
 @Stateless
 public class TouchTimer {
@@ -28,12 +28,12 @@ public class TouchTimer {
       service.setMs(System.currentTimeMillis());
 
       try {
-        ServicesDirectoryRESTclient directory = 
+        ServicesDirectoryRESTclient directoryService = 
           new ServicesDirectoryRESTclient(
             config.getString(Config.SERVICES_DIRECTORY_BASE_URI));
         
-        directory.registerService(service);
-        directory.close();
+        directoryService.registerService(service);
+        directoryService.close();
       } catch (ClientErrorException ex) {
         System.err.println("Error: can't register service in services directory");
         ex.printStackTrace(System.err);

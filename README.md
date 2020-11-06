@@ -9,7 +9,7 @@ REST API to automate buying/selling stocks
 
 # Current State
 ```diff
-+ [En desarrollo]
++ [Developing]
 ```
 
 # Maven environments
@@ -21,6 +21,9 @@ Use these variables in each environment:
 - STOCKK_BOT_NAME=[STOCKK_BOT_NAME]
 - STOCKK_BOT_URI=[STOCKK_BOT_URI]
 - SERVICES_DIRECTORY_BASE_URI=[SERVICES_DIRECTORY_BASE_URI]
+- IDENTITY_SERVICE_NAME=[IDENTITY_SERVICE_NAME]
+- USERS_RULES_DIRECTORY_NAME=[USERS_RULES_DIRECTORY_NAME]
+- USERS_RULES_FILE_PATH=[USERS_RULES_FILE_PATH]
 
 # Development Setup
 TODO

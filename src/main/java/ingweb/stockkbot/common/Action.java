@@ -3,13 +3,9 @@ package ingweb.stockkbot.common;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public enum StatusCode {
+public enum Action {
   UNDEFINED,
-  NOT_REGISTERED,
-  DOWN,
-  OUTDATED,
-  NOMINAL,
-  REGISTERED,
-  BOOTING,
-  DEGRADED;
+  SELL_HIGHER_THAN,
+  SELL_LOWER_THAN,
+  BUY_LOWER_THAN
 }

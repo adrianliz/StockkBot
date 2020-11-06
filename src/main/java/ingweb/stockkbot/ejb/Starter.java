@@ -18,13 +18,13 @@ public class Starter {
   public void init() {
     timer.touch(StatusCode.BOOTING);
 
-    System.out.println("Stockk bot is up!");
+    System.out.println("StockkBot is up!");
   }
 
   @PreDestroy
   public void down() {
     timer.touch(StatusCode.DOWN);
     
-    System.out.println("Stockk bot is down!");
+    System.out.println("StockkBot is down!");
   }
 }

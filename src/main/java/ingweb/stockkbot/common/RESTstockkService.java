@@ -1,8 +1,11 @@
 package ingweb.stockkbot.common;
 
 import com.google.gson.Gson;
-import java.io.Serializable;
 
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class RESTstockkService implements Serializable {
   private String name;
   private String uri;
@@ -47,7 +50,6 @@ public class RESTstockkService implements Serializable {
   }
 
   public String toJson() {
-    Gson gson = new Gson();
-    return gson.toJson(this);
+    return new Gson().toJson(this);
   }
 }
