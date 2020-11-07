@@ -17,6 +17,7 @@ public class Config {
   public static final String USERS_RULES_DIRECTORY_NAME = 
     "USERS_RULES_DIRECTORY_NAME";
   public static final String USERS_RULES_FILE_PATH = "USERS_RULES_FILE_PATH";
+  public static final String DELAY_EXECUTING_RULES = "DELAY_EXECUTING_RULES";
  
   private static Config instance = null;
   private Configuration config;
@@ -36,5 +37,9 @@ public class Config {
   
   public String getString(String clave) {
     return config.getString(clave);
+  }
+  
+  public int getInt(String key) {
+    return config.getInt(key);
   }
 }
