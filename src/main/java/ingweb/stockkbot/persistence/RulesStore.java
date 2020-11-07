@@ -79,7 +79,7 @@ public class RulesStore implements RulesDAO {
     }
   }
 
-  private void save() {
+  private synchronized void save() {
     try {
       Writer writer
         = new FileWriter(config.getString(Config.USERS_RULES_FILE_PATH));
@@ -102,19 +102,8 @@ public class RulesStore implements RulesDAO {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableList());
   }
-
-  @Override
-  public List<RESTrule> getRulesFromUser(String token) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public RESTrule getRuleFromUser(String token, long idRule) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public synchronized void addRule(String token, RESTrule rule) {
+  
+  private RESTuser getUser(String token) {
     IdentityRESTclient identityService
             = new IdentityRESTclient(
                     config.getString(Config.SERVICES_DIRECTORY_BASE_URI),
@@ -122,34 +111,93 @@ public class RulesStore implements RulesDAO {
 
     RESTuser user = identityService.getUser(RESTuser.class, token);
     identityService.close();
-
-    if ((user != null) && (rule != null)) {
+    
+    return user;
+  }
+  
+  private synchronized List<RESTrule> getRulesFromUser(RESTuser user) {
+    if (user != null) {
       String login = user.getLogin();
-
+      
       if (login != null) {
         List<RESTrule> userRules = usersRules.get(login);
         
-        if (userRules == null) {
-          userRules = new ArrayList();
+        if (userRules != null) {
+          return userRules;
         }
+      }
+    }
+    
+    return new ArrayList();
+  }
+
+  @Override
+  public synchronized List<RESTrule> getRulesFromUser(String token) {
+    RESTuser user = getUser(token);
+    
+    return getRulesFromUser(user);
+  }
+
+  @Override
+  public synchronized RESTrule getRuleFromUser(String token, long idRule) {
+    if ((token != null) && (idRule >= 0)) {
+      for (RESTrule rule: getRulesFromUser(token)) {
+        if (rule.getId().equals(idRule)) {
+          return rule;
+        }
+      }
+    }
+    
+    return null;
+  }
+
+  @Override
+  public synchronized void addRule(String token, RESTrule rule) {
+    if ((token != null) && (rule != null)) {
+      RESTuser user = getUser(token);
+    
+      if (user != null) {
+        String login = user.getLogin();
         
-        rule.setLogin(login);
-        rule.setId(nextRuleID++);
-        userRules.add(rule);
-        usersRules.put(login, userRules);
-                
+        if (login != null) {
+          List<RESTrule> userRules = getRulesFromUser(user);
+
+          rule.setLogin(login);
+          rule.setId(nextRuleID++);
+          userRules.add(rule);
+          usersRules.put(login, userRules);
+
+          save();
+        }
+      }
+    }
+  }
+
+  @Override
+  public synchronized void editRule(String token, RESTrule rule) {
+    if ((token != null) && (rule != null)) {
+      RESTrule previousRule = getRuleFromUser(token, rule.getId());
+      
+      if (previousRule != null) {
+        previousRule.setTicker(rule.getTicker());
+        previousRule.setNumShares(rule.getNumShares());
+        previousRule.setWhatToDo(rule.getWhatToDo());
+        previousRule.setTriggerPrice(rule.getTriggerPrice());
+        previousRule.setEnabled(rule.isEnabled());
+        
         save();
       }
     }
   }
 
   @Override
-  public void editRule(String token, RESTrule rule) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public void deleteRule(String token, long idRule) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public synchronized void deleteRule(String token, long idRule) {
+    if ((token != null) && (idRule >= 0)) {
+      List<RESTrule> userRules = getRulesFromUser(token);
+      
+      if (userRules.removeIf(rule -> rule.getId().equals(idRule))) {
+        save();
+      }     
+    }
   }
 }
