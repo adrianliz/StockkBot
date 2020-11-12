@@ -175,7 +175,7 @@ public class RulesStore implements RulesDAO {
 
   @Override
   public synchronized void editRule(String token, RESTrule rule) {
-    if ((token != null) && (rule != null)) {
+    if ((token != null) && (rule != null) && (rule.getId() != null)) {
       RESTrule previousRule = getRuleFromUser(token, rule.getId());
       
       if (previousRule != null) {
