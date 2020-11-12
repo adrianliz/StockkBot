@@ -29,9 +29,6 @@ public class Bot {
       strategyFactory = StrategyFactory.getInstance(config);
       rulesExecuted = 0;
       
-      //timer = new Timer(config.getInt(Config.DELAY_EXECUTING_RULES), (ActionEvent e) -> {
-        executeRules();
-      //});
       
       //timer.start();
     } catch (ConfigurationException ex) {
@@ -47,17 +44,21 @@ public class Bot {
 
     return instance;
   }
+
   
-  synchronized private void executeRules() {
+  synchronized public void executeRules() {
+
     System.out.println("Executing bot rules...");
     
     for (RESTrule rule: rulesDAO.getRules()) {
       Action action = rule.getWhatToDo();
       
-      if ((action != null) /*&& (rule.isEnabled())*/) {
+
+      if ((action != null) && (rule.isEnabled())) {
         TriggerStrategy triggerStrategy = strategyFactory.makeTrigger(action);
         
-        //if (triggerStrategy.triggerRule(rule)) {
+        if (triggerStrategy.triggerRule(rule, getPriceTicker(rule.getTicker()))) {
+
           System.out.println("Rule " + action + " is executing");
           ActionStrategy actionStrategy = strategyFactory.makeRuleAction(action);
           
@@ -66,7 +67,8 @@ public class Bot {
           rule.setEnabled(false);
           rulesDAO.editRule(getToken(rule.getLogin()), rule);
           rulesExecuted++;
-        //}
+
+        }
       }
     }
     

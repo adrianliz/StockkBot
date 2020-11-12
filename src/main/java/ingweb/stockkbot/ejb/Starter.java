@@ -14,12 +14,15 @@ import javax.ejb.Startup;
 public class Starter {
   @EJB
   TouchTimer timer;
+  
+  @EJB
+  BotTimer botTimer;
+    
   Bot bot;
 
   @PostConstruct
   public void init() {
     timer.touch(StatusCode.BOOTING);
-    bot = Bot.getInstance();
 
     System.out.println("StockkBot is up!");
   }
@@ -27,7 +30,6 @@ public class Starter {
   @PreDestroy
   public void down() {
     timer.touch(StatusCode.DOWN);
-    bot.stopTimer();
     
     System.out.println("StockkBot is down!");
   }
