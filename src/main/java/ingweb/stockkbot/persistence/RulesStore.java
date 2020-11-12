@@ -100,7 +100,7 @@ public class RulesStore implements RulesDAO {
     return
       usersRules.values().stream()
                 .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
   }
   
   private RESTuser getUser(String token) {

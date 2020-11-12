@@ -20,6 +20,7 @@ class StrategyFactory {
     SellStrategy sellStrategy = new SellStrategy(config);
     BuyStrategy buyStrategy = new BuyStrategy(config);
     actionStrategies.put(Action.UNDEFINED, mockStrategy);
+    actionStrategies.put(Action.AUTO_AI, mockStrategy);
     actionStrategies.put(Action.SELL_HIGHER_THAN, sellStrategy);
     actionStrategies.put(Action.SELL_LOWER_THAN, sellStrategy);
     actionStrategies.put(Action.BUY_LOWER_THAN, buyStrategy);
@@ -27,6 +28,7 @@ class StrategyFactory {
     TriggerHigherStrategy higherThanStrategy = new TriggerHigherStrategy();
     TriggerLowerStrategy lowerThanStrategy = new TriggerLowerStrategy();
     triggerStrategies.put(Action.UNDEFINED, mockStrategy);
+    triggerStrategies.put(Action.AUTO_AI, mockStrategy);
     triggerStrategies.put(Action.SELL_HIGHER_THAN, higherThanStrategy);
     triggerStrategies.put(Action.SELL_LOWER_THAN, lowerThanStrategy);
     triggerStrategies.put(Action.BUY_LOWER_THAN, lowerThanStrategy);

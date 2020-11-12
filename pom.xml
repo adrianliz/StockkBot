@@ -6,7 +6,7 @@
   <artifactId>StockkBot</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
-  <name>StockkBot-1.0</name>
+  <name>StockkBot</name>
   
   <profiles>
     <profile>
@@ -78,6 +78,8 @@
   </dependencies>
     
   <build>
+    <finalName>stockk-bot</finalName>
+    
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
