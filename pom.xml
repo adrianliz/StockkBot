@@ -6,11 +6,11 @@
   <artifactId>StockkBot</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
-  <name>StockkBot-1.0</name>
+  <name>StockkBot</name>
   
   <profiles>
     <profile>
-      <id>dev</id> <!-- perfil de desarrollo -->
+      <id>dev</id> <!-- developer profile -->
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -23,7 +23,7 @@
       </build>
     </profile>
 
-    <profile> <!-- perfil de producción -->
+    <profile> <!-- production profile -->
       <id>prod</id>
       <build>
         <resources>
@@ -78,6 +78,8 @@
   </dependencies>
     
   <build>
+    <finalName>stockk-bot</finalName>
+    
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

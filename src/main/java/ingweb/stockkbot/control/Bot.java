@@ -1,35 +1,29 @@
 package ingweb.stockkbot.control;
 
+import ingweb.stockkbot.common.Action;
 import ingweb.stockkbot.common.Config;
 import ingweb.stockkbot.common.RESTrule;
 import ingweb.stockkbot.persistence.RulesDAO;
 import ingweb.stockkbot.persistence.RulesStore;
-import org.apache.commons.configuration2.ex.ConfigurationException;
+import ingweb.stockkbot.rest.client.BufferedRESTclient;
+import ingweb.stockkbot.rest.client.TokenRESTclient;
 
-import java.awt.event.ActionEvent;
-import javax.swing.Timer;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
 public class Bot {
   private static Bot instance = null;
   
   private Config config;
   private RulesDAO rulesDAO;
-  private RuleStrategyFactory ruleStrategyFactory;
-  private Timer timer;
+  private StrategyFactory strategyFactory;
   private long rulesExecuted;
   
   private Bot() {
     try {
       config = Config.getInstance();
       rulesDAO = RulesStore.getInstance();
-      ruleStrategyFactory = RuleStrategyFactory.getInstance();
+      strategyFactory = StrategyFactory.getInstance(config);
       rulesExecuted = 0;
-      
-      timer = new Timer(config.getInt(Config.DELAY_EXECUTING_RULES), (ActionEvent e) -> {
-        executeRules();
-      });
-      
-      timer.start();
     } catch (ConfigurationException ex) {
       System.err.println("Error: can't load config file");
       ex.printStackTrace(System.err);      
@@ -43,29 +37,52 @@ public class Bot {
 
     return instance;
   }
-  
-  private void executeRules() {
-    System.out.println("Executing bot rules...");
+
+  public synchronized void executeRules() {
+    System.out.println("--------Executing bot rules--------");
     
     for (RESTrule rule: rulesDAO.getRules()) {
-      RuleStrategy ruleStrategy = 
-        ruleStrategyFactory.makeRuleStrategy(rule.getWhatToDo());
+      Action action = rule.getWhatToDo();
       
-      if (ruleStrategy.triggerRule(rule)) {
-        ruleStrategy.executeRule(rule);
-        rulesExecuted++;
+      if ((action != null) && (rule.isEnabled())) {
+        TriggerStrategy triggerStrategy = strategyFactory.makeTrigger(action);
+        
+        if (triggerStrategy.triggerRule(rule, getPriceTicker(rule.getTicker()))) {
+          System.out.println("Executing " + action + " rule");
+          ActionStrategy actionStrategy = strategyFactory.makeAction(action);
+          
+          actionStrategy.executeRule(rule, getToken(rule.getLogin()));
+          
+          rule.setEnabled(false);
+          rulesDAO.editRule(getToken(rule.getLogin()), rule);
+          rulesExecuted++;
+        }
       }
     }
     
-    System.out.println("Bot rules executed!");
-    System.out.println("Bot has executed " + rulesExecuted + " rules!");
+    System.out.println("--------Bot rules executed--------");
+    System.out.println("--------Bot has executed " + rulesExecuted + 
+                       " rules in total--------");
   }
   
-  public void stopTimer() {
-    if (timer != null) {
-      if (timer.isRunning()) {
-        timer.stop();
-      }
-    }
+  private String getToken(String login) {
+    TokenRESTclient tokenService =
+      new TokenRESTclient(config.getString(Config.SERVICES_DIRECTORY_BASE_URI), 
+                          config.getString(Config.IDENTITY_SERVICE_NAME));
+    String token = 
+      tokenService.getToken(login, config.getString(Config.STOCKK_MASTER_PWD));
+    tokenService.close();
+    
+    return token;
+  }
+  
+  private double getPriceTicker(String ticker) {
+    BufferedRESTclient bufferedService = 
+      new BufferedRESTclient(config.getString(Config.SERVICES_DIRECTORY_BASE_URI),
+                             config.getString(Config.BUFFERED_SERVICE_NAME));
+    double price = bufferedService.getPrice(ticker);
+    bufferedService.close();
+    
+    return price;
   }
 }

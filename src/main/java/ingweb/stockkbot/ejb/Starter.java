@@ -1,7 +1,6 @@
 package ingweb.stockkbot.ejb;
 
 import ingweb.stockkbot.common.StatusCode;
-import ingweb.stockkbot.control.Bot;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -13,22 +12,21 @@ import javax.ejb.Startup;
 @Startup
 public class Starter {
   @EJB
-  TouchTimer timer;
-  Bot bot;
-
+  TouchTimer touchTimer;
+  @EJB
+  BotTimer botTimer;
+  
   @PostConstruct
   public void init() {
-    timer.touch(StatusCode.BOOTING);
-    bot = Bot.getInstance();
+    touchTimer.touch(StatusCode.BOOTING);
 
-    System.out.println("StockkBot is up!");
+    System.out.println("--------StockkBot is up--------");
   }
 
   @PreDestroy
   public void down() {
-    timer.touch(StatusCode.DOWN);
-    bot.stopTimer();
+    touchTimer.touch(StatusCode.DOWN);
     
-    System.out.println("StockkBot is down!");
+    System.out.println("--------StockkBot is down--------");
   }
 }

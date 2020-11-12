@@ -100,7 +100,7 @@ public class RulesStore implements RulesDAO {
     return
       usersRules.values().stream()
                 .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
   }
   
   private RESTuser getUser(String token) {
@@ -176,16 +176,20 @@ public class RulesStore implements RulesDAO {
   @Override
   public synchronized void editRule(String token, RESTrule rule) {
     if ((token != null) && (rule != null)) {
-      RESTrule previousRule = getRuleFromUser(token, rule.getId());
+      Long ruleId = rule.getId();
       
-      if (previousRule != null) {
-        previousRule.setTicker(rule.getTicker());
-        previousRule.setNumShares(rule.getNumShares());
-        previousRule.setWhatToDo(rule.getWhatToDo());
-        previousRule.setTriggerPrice(rule.getTriggerPrice());
-        previousRule.setEnabled(rule.isEnabled());
-        
-        save();
+      if (ruleId != null) {
+        RESTrule previousRule = getRuleFromUser(token, ruleId);
+
+        if (previousRule != null) {
+          previousRule.setTicker(rule.getTicker());
+          previousRule.setNumShares(rule.getNumShares());
+          previousRule.setWhatToDo(rule.getWhatToDo());
+          previousRule.setTriggerPrice(rule.getTriggerPrice());
+          previousRule.setEnabled(rule.isEnabled());
+
+          save();
+        }
       }
     }
   }

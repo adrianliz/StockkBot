@@ -20,12 +20,12 @@ import javax.ws.rs.core.MediaType;
 
 @Path("rule")
 @RequestScoped
-public class StockkBotSerivce {
+public class StockkBotService {
   @Context
   private UriInfo context;
   private RulesDAO rulesDAO;
 
-  public StockkBotSerivce() {
+  public StockkBotService() {
     rulesDAO = RulesStore.getInstance();
   }
 
