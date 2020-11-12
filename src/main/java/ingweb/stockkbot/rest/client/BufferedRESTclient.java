@@ -16,9 +16,7 @@ public class BufferedRESTclient {
     
     ServicesDirectoryRESTclient directoryService = 
       new ServicesDirectoryRESTclient(serviceDirectoryBaseURI);
-    
-    System.out.println("AAAAAA " + serviceDirectoryBaseURI);
-    System.out.println("AAAAAAAA " + serviceName);
+
     RESTstockkService bufferedService = directoryService.getService(serviceName);
     directoryService.close();
 

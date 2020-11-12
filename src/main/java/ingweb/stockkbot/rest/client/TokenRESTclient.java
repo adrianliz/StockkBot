@@ -27,7 +27,6 @@ public class TokenRESTclient {
     WebTarget resource = webTarget;
     resource = resource.path(java.text.MessageFormat.format("{0}/{1}", new Object[]{login, cleanPassword}));
 
-    System.out.println(resource);
     return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
   }
 

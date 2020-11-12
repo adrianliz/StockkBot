@@ -5,7 +5,7 @@ import ingweb.stockkbot.common.RESTrule;
 import ingweb.stockkbot.common.RESTstock;
 import ingweb.stockkbot.rest.client.PortfolioRESTclient;
 
-public class BuyStrategy implements ActionStrategy {
+class BuyStrategy implements ActionStrategy {
   private Config config;
   
   protected BuyStrategy(Config config) {

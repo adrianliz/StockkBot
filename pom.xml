@@ -10,7 +10,7 @@
   
   <profiles>
     <profile>
-      <id>dev</id> <!-- perfil de desarrollo -->
+      <id>dev</id> <!-- developer profile -->
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -23,7 +23,7 @@
       </build>
     </profile>
 
-    <profile> <!-- perfil de producción -->
+    <profile> <!-- production profile -->
       <id>prod</id>
       <build>
         <resources>

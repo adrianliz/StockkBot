@@ -1,6 +1,7 @@
 package ingweb.stockkbot.common;
 
 import com.google.gson.Gson;
+
 import java.io.Serializable;
 
 public class RESTstock implements Serializable {

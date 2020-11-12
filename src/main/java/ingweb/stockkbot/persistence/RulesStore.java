@@ -175,17 +175,21 @@ public class RulesStore implements RulesDAO {
 
   @Override
   public synchronized void editRule(String token, RESTrule rule) {
-    if ((token != null) && (rule != null) && (rule.getId() != null)) {
-      RESTrule previousRule = getRuleFromUser(token, rule.getId());
+    if ((token != null) && (rule != null)) {
+      Long ruleId = rule.getId();
       
-      if (previousRule != null) {
-        previousRule.setTicker(rule.getTicker());
-        previousRule.setNumShares(rule.getNumShares());
-        previousRule.setWhatToDo(rule.getWhatToDo());
-        previousRule.setTriggerPrice(rule.getTriggerPrice());
-        previousRule.setEnabled(rule.isEnabled());
-        
-        save();
+      if (ruleId != null) {
+        RESTrule previousRule = getRuleFromUser(token, ruleId);
+
+        if (previousRule != null) {
+          previousRule.setTicker(rule.getTicker());
+          previousRule.setNumShares(rule.getNumShares());
+          previousRule.setWhatToDo(rule.getWhatToDo());
+          previousRule.setTriggerPrice(rule.getTriggerPrice());
+          previousRule.setEnabled(rule.isEnabled());
+
+          save();
+        }
       }
     }
   }

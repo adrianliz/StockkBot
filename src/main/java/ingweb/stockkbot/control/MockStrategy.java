@@ -2,7 +2,7 @@ package ingweb.stockkbot.control;
 
 import ingweb.stockkbot.common.RESTrule;
 
-public class MockStrategy implements TriggerStrategy, ActionStrategy {
+class MockStrategy implements TriggerStrategy, ActionStrategy {
   @Override
   public boolean triggerRule(RESTrule rule, double currentTickerPrice) {
     return true;

@@ -1,6 +1,7 @@
 package ingweb.stockkbot.ejb;
 
 import ingweb.stockkbot.control.Bot;
+
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 

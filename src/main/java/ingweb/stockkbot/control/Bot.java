@@ -10,16 +10,12 @@ import ingweb.stockkbot.rest.client.TokenRESTclient;
 
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
-import java.awt.event.ActionEvent;
-import javax.swing.Timer;
-
 public class Bot {
   private static Bot instance = null;
   
   private Config config;
   private RulesDAO rulesDAO;
   private StrategyFactory strategyFactory;
-  private Timer timer;
   private long rulesExecuted;
   
   private Bot() {
@@ -28,9 +24,6 @@ public class Bot {
       rulesDAO = RulesStore.getInstance();
       strategyFactory = StrategyFactory.getInstance(config);
       rulesExecuted = 0;
-      
-      
-      //timer.start();
     } catch (ConfigurationException ex) {
       System.err.println("Error: can't load config file");
       ex.printStackTrace(System.err);      
@@ -45,35 +38,31 @@ public class Bot {
     return instance;
   }
 
-  
-  synchronized public void executeRules() {
-
-    System.out.println("Executing bot rules...");
+  public synchronized void executeRules() {
+    System.out.println("--------Executing bot rules--------");
     
     for (RESTrule rule: rulesDAO.getRules()) {
       Action action = rule.getWhatToDo();
       
-
       if ((action != null) && (rule.isEnabled())) {
         TriggerStrategy triggerStrategy = strategyFactory.makeTrigger(action);
         
         if (triggerStrategy.triggerRule(rule, getPriceTicker(rule.getTicker()))) {
-
-          System.out.println("Rule " + action + " is executing");
-          ActionStrategy actionStrategy = strategyFactory.makeRuleAction(action);
+          System.out.println("Executing " + action + " rule");
+          ActionStrategy actionStrategy = strategyFactory.makeAction(action);
           
           actionStrategy.executeRule(rule, getToken(rule.getLogin()));
           
           rule.setEnabled(false);
           rulesDAO.editRule(getToken(rule.getLogin()), rule);
           rulesExecuted++;
-
         }
       }
     }
     
-    System.out.println("Bot rules executed!");
-    System.out.println("Bot has executed " + rulesExecuted + " rules in total!");
+    System.out.println("--------Bot rules executed--------");
+    System.out.println("--------Bot has executed " + rulesExecuted + 
+                       " rules in total--------");
   }
   
   private String getToken(String login) {
@@ -95,13 +84,5 @@ public class Bot {
     bufferedService.close();
     
     return price;
-  }
-  
-  public void stopTimer() {
-    if (timer != null) {
-      if (timer.isRunning()) {
-        timer.stop();
-      }
-    }
   }
 }

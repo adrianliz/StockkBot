@@ -2,6 +2,7 @@ package ingweb.stockkbot.control;
 
 import ingweb.stockkbot.common.Action;
 import ingweb.stockkbot.common.Config;
+
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ class StrategyFactory {
     return triggerStrategies.get(action);
   }
   
-  ActionStrategy makeRuleAction(Action action) {
+  ActionStrategy makeAction(Action action) {
     return actionStrategies.get(action);
   }
 }
