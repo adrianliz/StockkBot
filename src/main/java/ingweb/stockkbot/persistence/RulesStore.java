@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.ws.rs.ClientErrorException;
 
 public class RulesStore implements RulesDAO {
   private static RulesDAO instance = null;
@@ -104,13 +105,20 @@ public class RulesStore implements RulesDAO {
   }
   
   private RESTuser getUser(String token) {
-    IdentityRESTclient identityService
-            = new IdentityRESTclient(
-                    config.getString(Config.SERVICES_DIRECTORY_BASE_URI),
-                    config.getString(Config.IDENTITY_SERVICE_NAME));
+    RESTuser user = null;
+    
+    try {
+      IdentityRESTclient identityService
+              = new IdentityRESTclient(
+                      config.getString(Config.SERVICES_DIRECTORY_BASE_URI),
+                      config.getString(Config.IDENTITY_SERVICE_NAME));
 
-    RESTuser user = identityService.getUser(RESTuser.class, token);
-    identityService.close();
+      user = identityService.getUser(RESTuser.class, token);
+      identityService.close();
+    } catch (ClientErrorException ex) {
+      System.err.println("Error: can't retrieve user from client");
+      ex.printStackTrace(System.err);
+    }
     
     return user;
   }

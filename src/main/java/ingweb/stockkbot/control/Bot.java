@@ -10,6 +10,8 @@ import ingweb.stockkbot.rest.client.TokenRESTclient;
 
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
+import javax.ws.rs.ClientErrorException;
+
 public class Bot {
   private static Bot instance = null;
   
@@ -42,21 +44,26 @@ public class Bot {
     System.out.println("--------Executing bot rules--------");
     
     for (RESTrule rule: rulesDAO.getRules()) {
-      Action action = rule.getWhatToDo();
-      
-      if ((action != null) && (rule.isEnabled())) {
-        TriggerStrategy triggerStrategy = strategyFactory.makeTrigger(action);
-        
-        if (triggerStrategy.triggerRule(rule, getPriceTicker(rule.getTicker()))) {
-          System.out.println("Executing " + action + " rule");
-          ActionStrategy actionStrategy = strategyFactory.makeAction(action);
-          
-          actionStrategy.executeRule(rule, getToken(rule.getLogin()));
-          
-          rule.setEnabled(false);
-          rulesDAO.editRule(getToken(rule.getLogin()), rule);
-          rulesExecuted++;
+      try {
+        Action action = rule.getWhatToDo();
+
+        if ((action != null) && (rule.isEnabled())) {
+          TriggerStrategy triggerStrategy = strategyFactory.makeTrigger(action);
+
+          if (triggerStrategy.triggerRule(rule, getPriceTicker(rule.getTicker()))) {
+            System.out.println("Executing " + action + " rule");
+            ActionStrategy actionStrategy = strategyFactory.makeAction(action);
+
+            actionStrategy.executeRule(rule, getToken(rule.getLogin()));
+
+            rule.setEnabled(false);
+            rulesDAO.editRule(getToken(rule.getLogin()), rule);
+            rulesExecuted++;
+          }
         }
+      } catch (ClientErrorException ex) {
+        System.err.println("Error: can't execute rule " + rule.toJson());
+        ex.printStackTrace(System.err);
       }
     }
     
@@ -65,7 +72,7 @@ public class Bot {
                        " rules in total--------");
   }
   
-  private String getToken(String login) {
+  private String getToken(String login) throws ClientErrorException {
     TokenRESTclient tokenService =
       new TokenRESTclient(config.getString(Config.SERVICES_DIRECTORY_BASE_URI), 
                           config.getString(Config.IDENTITY_SERVICE_NAME));
@@ -76,7 +83,7 @@ public class Bot {
     return token;
   }
   
-  private double getPriceTicker(String ticker) {
+  private double getPriceTicker(String ticker) throws ClientErrorException {
     BufferedRESTclient bufferedService = 
       new BufferedRESTclient(config.getString(Config.SERVICES_DIRECTORY_BASE_URI),
                              config.getString(Config.BUFFERED_SERVICE_NAME));

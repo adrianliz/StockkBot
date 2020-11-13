@@ -6,7 +6,7 @@ import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 
 @Stateless
-public class BotTimer {
+public class BotTimer {  
   @Schedule(hour = "*", minute = "*", second = "59", persistent = false)
   public void timer() {
     Bot.getInstance().executeRules();
