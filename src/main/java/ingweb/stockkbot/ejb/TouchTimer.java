@@ -12,7 +12,7 @@ import javax.ws.rs.ClientErrorException;
 
 @Stateless
 public class TouchTimer {
-  @Schedule(hour = "*", minute = "*", second = "22", persistent = false)
+  @Schedule(hour = "*", minute = "*", second = "24", persistent = false)
   public void timer() {
     touch(StatusCode.NOMINAL);
   }

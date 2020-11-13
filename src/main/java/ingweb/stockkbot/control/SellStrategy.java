@@ -6,6 +6,8 @@ import ingweb.stockkbot.common.RESTrule;
 import ingweb.stockkbot.common.RESTstock;
 import ingweb.stockkbot.rest.client.PortfolioRESTclient;
 
+import javax.ws.rs.ClientErrorException;
+
 class SellStrategy implements ActionStrategy {
   private Config config;
   
@@ -14,7 +16,7 @@ class SellStrategy implements ActionStrategy {
   }
 
   @Override
-  public void executeRule(RESTrule rule, String token) {
+  public void executeRule(RESTrule rule, String token) throws ClientErrorException {
     if (token != null) {
       PortfolioRESTclient portfolioService =
         new PortfolioRESTclient(config.getString(Config.SERVICES_DIRECTORY_BASE_URI), 
