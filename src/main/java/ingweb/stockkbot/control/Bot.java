@@ -61,7 +61,7 @@ public class Bot {
             rulesExecuted++;
           }
         }
-      } catch (ClientErrorException ex) {
+      } catch (ClientErrorException | NullPointerException ex) {
         System.err.println("Error: can't execute rule " + rule.toJson());
         ex.printStackTrace(System.err);
       }
@@ -72,7 +72,7 @@ public class Bot {
                        " rules in total--------");
   }
   
-  private String getToken(String login) throws ClientErrorException {
+  private String getToken(String login) throws ClientErrorException, NullPointerException {
     TokenRESTclient tokenService =
       new TokenRESTclient(config.getString(Config.SERVICES_DIRECTORY_BASE_URI), 
                           config.getString(Config.IDENTITY_SERVICE_NAME));
@@ -83,7 +83,7 @@ public class Bot {
     return token;
   }
   
-  private double getPriceTicker(String ticker) throws ClientErrorException {
+  private double getPriceTicker(String ticker) throws ClientErrorException, NullPointerException {
     BufferedRESTclient bufferedService = 
       new BufferedRESTclient(config.getString(Config.SERVICES_DIRECTORY_BASE_URI),
                              config.getString(Config.BUFFERED_SERVICE_NAME));

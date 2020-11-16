@@ -115,7 +115,7 @@ public class RulesStore implements RulesDAO {
 
       user = identityService.getUser(RESTuser.class, token);
       identityService.close();
-    } catch (ClientErrorException ex) {
+    } catch (ClientErrorException | NullPointerException ex) {
       System.err.println("Error: can't retrieve user from client");
       ex.printStackTrace(System.err);
     }
