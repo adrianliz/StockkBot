@@ -1,3 +1,8 @@
+/**
+ * RulesDAO
+ * @author Adrián Lizaga Isaac
+ */
+
 package ingweb.stockkbot.persistence;
 
 import ingweb.stockkbot.common.RESTrule;

@@ -1,3 +1,8 @@
+/**
+ * StockkBotService
+ * @author Adrián Lizaga Isaac
+ */
+
 package ingweb.stockkbot.rest;
 
 import ingweb.stockkbot.common.RESTrule;

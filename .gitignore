@@ -47,4 +47,7 @@ dist/
 nbdist/
 .nb-gradle/
 
+StockkBot.iml
+.idea/
+
 # End of https://www.toptal.com/developers/gitignore/api/java,java-web,code-java,netbeans

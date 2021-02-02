@@ -1,3 +1,8 @@
+/**
+ * RulesTuple
+ * @author Borja Rando Jarque, Adrián Lizaga Isaac
+ */
+
 package ingweb.stockkbot.common;
 
 public class RulesTuple<A, B> {

@@ -1,3 +1,8 @@
+/**
+ * BotTimer
+ * @author Borja Rando Jarque, Adrián Lizaga Isaac
+ */
+
 package ingweb.stockkbot.ejb;
 
 import ingweb.stockkbot.control.Bot;

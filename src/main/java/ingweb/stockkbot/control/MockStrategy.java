@@ -1,3 +1,8 @@
+/**
+ * MockStrategy
+ * @author Borja Rando Jarque
+ */
+
 package ingweb.stockkbot.control;
 
 import ingweb.stockkbot.common.RESTrule;

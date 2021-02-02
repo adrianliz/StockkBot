@@ -1,3 +1,8 @@
+/**
+ * RESTuser
+ * @author Félix Serna Fortea
+ */
+
 package ingweb.stockkbot.common;
 
 import com.google.gson.Gson;

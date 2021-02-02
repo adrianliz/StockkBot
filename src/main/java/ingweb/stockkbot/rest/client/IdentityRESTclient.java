@@ -1,3 +1,8 @@
+/**
+ * IdentityRESTclient
+ * @author Félix Serna Fortea
+ */
+
 package ingweb.stockkbot.rest.client;
 
 import ingweb.stockkbot.common.RESTstockkService;

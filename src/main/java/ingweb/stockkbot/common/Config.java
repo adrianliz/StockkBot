@@ -1,3 +1,8 @@
+/**
+ * Config
+ * @author Borja Rando Jarque, Adrián Lizaga Isaac
+ */
+
 package ingweb.stockkbot.common;
 
 import org.apache.commons.configuration2.Configuration;

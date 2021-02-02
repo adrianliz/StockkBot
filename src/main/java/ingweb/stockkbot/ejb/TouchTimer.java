@@ -1,3 +1,8 @@
+/**
+ * TouchTimer
+ * @author Borja Rando Jarque, Adrián Lizaga Isaac, Félix Serna Fortea
+ */
+
 package ingweb.stockkbot.ejb;
 
 import ingweb.stockkbot.common.Config;
