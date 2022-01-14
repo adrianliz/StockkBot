@@ -9,7 +9,7 @@ REST API to automate buying/selling stocks
 
 # Current State
 ```diff
-+ [Production]
+- [Finalizado]
 ```
 
 # Maven environments
